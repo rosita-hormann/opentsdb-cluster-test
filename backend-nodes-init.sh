@@ -81,53 +81,42 @@ bin/hadoop namenode -format
 # restart HDFS services
 sbin/start-dfs.sh
 
-# Then you must logout of hadoop-master container
+# Then you must exit of hadoop-master container
 
 # HBase nodes:
+
+	# --replicas 1 \
+	# --detach=true \
+	# --endpoint-mode dnsrr \
+	# --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
+	# --mount type=bind,source=/data/hbase/config,target=/config/hbase \
+	# --mount type=bind,source=/data/hbase/logs/master,target=/usr/local/hbase/logs \
 docker run -d \
 	--name hbase-master \
 	--hostname hbase-master \
 	--network hdfs-net \
-	--replicas 1 \
-	--detach=true \
-	--endpoint-mode dnsrr \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/hbase/config,target=/config/hbase \
-	--mount type=bind,source=/data/hbase/logs/master,target=/usr/local/hbase/logs \
 	newnius/hbase:1.2.6
 
 docker run -d \
 	--name hbase-slave1 \
 	--hostname hbase-slave1 \
 	--network hdfs-net \
-	--replicas 1 \
-	--detach=true \
-	--endpoint-mode dnsrr \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/hbase/config,target=/config/hbase \
-	--mount type=bind,source=/data/hbase/logs/slave1,target=/usr/local/hbase/logs \
 	newnius/hbase:1.2.6
 
 docker run -d \
 	--name hbase-slave2 \
 	--hostname hbase-slave2 \
 	--network hdfs-net \
-	--replicas 1 \
-	--detach=true \
-	--endpoint-mode dnsrr \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/hbase/config,target=/config/hbase \
-	--mount type=bind,source=/data/hbase/logs/slave2,target=/usr/local/hbase/logs \
 	newnius/hbase:1.2.6
 
 docker run -d \
 	--name hbase-slave3 \
 	--hostname hbase-slave3 \
 	--network hdfs-net \
-	--replicas 1 \
-	--detach=true \
-	--endpoint-mode dnsrr \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/hbase/config,target=/config/hbase \
-	--mount type=bind,source=/data/hbase/logs/slave3,target=/usr/local/hbase/logs \
 	newnius/hbase:1.2.6
+
+# Now we start HBase master node
+docker exec -it hbase-master /bin/bash
+
+# inside hbase-master container
+bin/start-hbase.sh
