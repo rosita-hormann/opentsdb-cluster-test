@@ -6,46 +6,34 @@ docker network create hdfs-net
 
 # ZooKeeper nodes:
 
+	# --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
+	# --mount type=bind,source=/data/zookeeper/data/node1,target=/data \
+	# --mount type=bind,source=/data/zookeeper/logs/node1,target=/datalog \
 docker run -d \
 	--name zookeeper-node1 \
+	--restart always \
 	--hostname zookeeper-node1 \
-	--detach=true \
-	--replicas 1 \
 	--network hdfs-net \
-	--endpoint-mode dnsrr \
 	--env ZOO_MY_ID=1 \
 	--env ZOO_SERVERS="server.1=zookeeper-node1:2888:3888 server.2=zookeeper-node2:2888:3888 server.3=zookeeper-node3:2888:3888" \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/zookeeper/data/node1,target=/data \
-	--mount type=bind,source=/data/zookeeper/logs/node1,target=/datalog \
 	zookeeper:3.4
 
 docker run -d \
 	--name zookeeper-node2 \
+	--restart always \
 	--hostname zookeeper-node2 \
-	--detach=true \
-	--replicas 1 \
 	--network hdfs-net \
-	--endpoint-mode dnsrr \
 	--env ZOO_MY_ID=2 \
 	--env ZOO_SERVERS="server.1=zookeeper-node1:2888:3888 server.2=zookeeper-node2:2888:3888 server.3=zookeeper-node3:2888:3888" \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/zookeeper/data/node2,target=/data \
-	--mount type=bind,source=/data/zookeeper/logs/node3,target=/datalog \
 	zookeeper:3.4
 
 docker run -d \
 	--name zookeeper-node3 \
+	--restart always \
 	--hostname zookeeper-node3 \
-	--replicas 1 \
-	--detach=true \
 	--network hdfs-net \
-	--endpoint-mode dnsrr \
 	--env ZOO_MY_ID=3 \
 	--env ZOO_SERVERS="server.1=zookeeper-node1:2888:3888 server.2=zookeeper-node2:2888:3888 server.3=zookeeper-node3:2888:3888" \
-	--mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	--mount type=bind,source=/data/zookeeper/data/node3,target=/data \
-	--mount type=bind,source=/data/zookeeper/logs/node3,target=/datalog \
 	zookeeper:3.4
 
 # HDFS (Hadoop) servers:
