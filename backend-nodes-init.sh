@@ -114,9 +114,13 @@ docker run -d \
 	--hostname hbase-slave3 \
 	--network hdfs-net \
 	newnius/hbase:1.2.6
+# First we copy create_table.sh (from OpenTSDB build) on the hbase-master container
+docker cp create_table.sh hbase-master:create_table.sh
 
 # Now we start HBase master node
 docker exec -it hbase-master /bin/bash
 
 # inside hbase-master container
 bin/start-hbase.sh
+cd /
+env COMPRESSION=NONE HBASE_HOME=/usr/local/hbase /create_table.sh
