@@ -1,5 +1,9 @@
 https://hub.docker.com/r/newnius/hbase
 
+http://opentsdb.net/docs/build/html/installation.html
+
+http://opentsdb.net/docs/build/html/user_guide/configuration.html
+
 ## Zookeeper
 
 Check zookeeper node status:
