@@ -39,7 +39,7 @@ docker run -d \
 	--restart always \
 	--network hdfs-net \
 	--hostname hadoop-master \
-	-p 16010:16010 \
+	-p 50070:50070 \
 	newnius/hadoop:2.7.4
 
 docker run -d \
@@ -78,17 +78,11 @@ sbin/start-dfs.sh
 # Then you must exit of hadoop-master container
 
 # HBase nodes:
-
-	# --replicas 1 \
-	# --detach=true \
-	# --endpoint-mode dnsrr \
-	# --mount type=bind,source=/etc/localtime,target=/etc/localtime,readonly \
-	# --mount type=bind,source=/data/hbase/config,target=/config/hbase \
-	# --mount type=bind,source=/data/hbase/logs/master,target=/usr/local/hbase/logs \
 docker run -d \
 	--name hbase-master \
 	--restart always \
 	--network hdfs-net \
+	-p 16010:16010 \
 	--hostname hbase-master \
 	newnius/hbase:1.2.6
 
@@ -112,6 +106,7 @@ docker run -d \
 	--network hdfs-net \
 	--hostname hbase-slave3 \
 	newnius/hbase:1.2.6
+
 # First we copy create_table.sh (from OpenTSDB build) on the hbase-master container
 docker cp create_table.sh hbase-master:create_table.sh
 
