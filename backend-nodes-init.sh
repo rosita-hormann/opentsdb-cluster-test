@@ -76,6 +76,7 @@ bin/hadoop namenode -format
 sbin/start-dfs.sh
 
 # Then you must exit of hadoop-master container
+exit
 
 # HBase nodes:
 docker run -d \
